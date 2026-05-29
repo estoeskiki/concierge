@@ -22,7 +22,7 @@ body {
   background-color: var(--bg-page);
   color: var(--text-primary);
   font-family: var(--font-body);
-  height: 100vh; width: 100vw;
+  height: 100dvh; width: 100vw;
   overflow: hidden;
 }
 
@@ -38,7 +38,7 @@ h1, h2, h3, .font-headline {
 
 /* ─── Layout ─── */
 .kiosk-frame {
-  width: 100vw; height: 100vh;
+  width: 100vw; height: 100dvh;
   background-color: var(--bg-surface);
   display: flex; flex-direction: row;
   overflow: hidden;
@@ -125,7 +125,7 @@ h1, h2, h3, .font-headline {
 /* ─── Side Nav ─── */
 .side-nav {
   width: var(--nav-width);
-  height: 100vh;
+  height: 100dvh;
   background: var(--bg-surface);
   border-right: 2px solid var(--border);
   display: flex;
@@ -317,6 +317,57 @@ h1, h2, h3, .font-headline {
   border-radius: 999px;
   line-height: 1;
   white-space: nowrap;
+}
+
+.baratillo-teaser {
+  margin: 16px 28px 0;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(255,107,152,0.12) 0%, rgba(255,107,152,0.06) 100%);
+  border: 2px solid var(--secondary);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(255,107,152,0.12);
+}
+
+.baratillo-teaser-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.baratillo-teaser-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.baratillo-teaser-title {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.baratillo-teaser-subtitle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.baratillo-teaser-arrow {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--secondary);
+  letter-spacing: -0.03em;
 }
 
 .side-nav-item.sale-tab {
@@ -535,9 +586,36 @@ h1, h2, h3, .font-headline {
   .header h1 { display: none; }
   .content { padding: 16px; }
   
-  .search-bar-inner { padding: 6px 6px 6px 16px; }
-  .search-bar-input { font-size: 1rem; }
+  .search-bar-form { width: 100%; flex: 1 1 100%; }
+  .search-bar-inner { padding: 6px 6px 6px 16px; width: 100%; }
+  .search-bar-input { font-size: 1rem; width: 100%; }
   .ai-btn-inline { padding: 8px 16px; font-size: 0.9rem; }
+
+  /* Baratillo teaser mobile responsiveness */
+  .baratillo-teaser {
+    margin: 12px 16px 0;
+    padding: 16px 12px;
+    border-radius: 16px;
+    gap: 8px;
+  }
+  .baratillo-teaser-left {
+    gap: 12px;
+    flex: 1;
+  }
+  .baratillo-badge {
+    padding: 4px 10px;
+    font-size: 0.75rem !important;
+  }
+  .baratillo-teaser-title {
+    font-size: 0.95rem;
+  }
+  .baratillo-teaser-subtitle {
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+  .baratillo-teaser-arrow {
+    font-size: 1rem;
+  }
 
   /* Side Nav becomes Bottom Nav */
   .side-nav {

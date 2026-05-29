@@ -72,33 +72,20 @@ export default function StoresScreen() {
       {!category && baratilloCount > 0 && (
         <button
           onClick={() => navigate('/baratillo')}
-          style={{
-            margin: '16px 28px 0',
-            padding: '20px 24px',
-            background: 'linear-gradient(135deg, rgba(255,107,152,0.12) 0%, rgba(255,107,152,0.06) 100%)',
-            border: '2px solid var(--secondary)',
-            borderRadius: '20px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            flexShrink: 0,
-            boxShadow: '0 4px 20px rgba(255,107,152,0.12)',
-          }}
+          className="baratillo-teaser"
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <span className="baratillo-badge" style={{ fontSize: '1rem', padding: '6px 16px' }}>BARATILLO</span>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
-              <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: '1.2rem', color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
+          <div className="baratillo-teaser-left">
+            <span className="baratillo-badge">BARATILLO</span>
+            <div className="baratillo-teaser-text">
+              <span className="baratillo-teaser-title">
                 OFERTAS DE HOY
               </span>
-              <span style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-                {baratilloCount} {baratilloCount === 1 ? 'tienda con descuentos activos' : 'tiendas con descuentos activos'}
+              <span className="baratillo-teaser-subtitle">
+                {baratilloCount} {baratilloCount === 1 ? 'tienda con descuentos' : 'tiendas con descuentos'}
               </span>
             </div>
           </div>
-          <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: '1.3rem', color: 'var(--secondary)', letterSpacing: '-0.03em' }}>
-            VER →
-          </span>
+          <span className="baratillo-teaser-arrow">VER →</span>
         </button>
       )}
 
