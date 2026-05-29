@@ -514,3 +514,160 @@ h1, h2, h3, .font-headline {
 @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .animate-fade { animation: fadeIn 0.3s ease forwards; }
 .animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  /* Layout changes */
+  .kiosk-frame {
+    flex-direction: column;
+  }
+  
+  .screen-area {
+    order: 1; /* Content above nav */
+  }
+
+  .header {
+    padding: 12px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .header h1 { font-size: 1.4rem; }
+  .content { padding: 16px; }
+  
+  .search-bar-inner { padding: 6px 6px 6px 16px; }
+  .search-bar-input { font-size: 1rem; }
+  .ai-btn-inline { padding: 8px 16px; font-size: 0.9rem; }
+
+  /* Side Nav becomes Bottom Nav */
+  .side-nav {
+    order: 2;
+    width: 100vw;
+    height: 70px;
+    border-right: none;
+    border-top: 2px solid var(--border);
+    flex-direction: row;
+    overflow: visible;
+  }
+  
+  /* Hide logo and footer on mobile */
+  .side-nav-logo, 
+  .side-nav > div:last-child {
+    display: none !important;
+  }
+  
+  .side-nav-tabs {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .side-nav-tabs::-webkit-scrollbar { display: none; }
+  
+  .side-nav-item {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 10px;
+    min-width: 76px;
+    text-align: center;
+  }
+  
+  .side-nav-item.active {
+    background: transparent;
+  }
+  
+  .side-nav-item.active::before {
+    left: 50%; top: 0;
+    transform: translateX(-50%);
+    width: 32px; height: 3px;
+    border-radius: 0 0 4px 4px;
+  }
+  
+  .side-nav-icon { font-size: 1.25rem; }
+  .side-nav-label { font-size: 0.65rem; }
+  
+  .side-nav-item.ai-tab .side-nav-icon {
+    width: 32px; height: 32px;
+    font-size: 1.1rem;
+  }
+  .side-nav-item.sale-tab .side-nav-icon {
+    width: 32px; height: 32px;
+    font-size: 0.9rem;
+  }
+
+  /* Grid layouts */
+  .compact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .compact-card {
+    min-height: 130px;
+    padding: 20px 12px;
+  }
+  .compact-card .card-emoji { font-size: 2.5rem; }
+  .compact-card .card-name { font-size: 0.95rem; }
+
+  /* Map/Standby tweaks */
+  .standby-mall-name { font-size: 2.4rem; }
+  .standby-title { font-size: 1.8rem; }
+  .standby-eyebrow { font-size: 1.2rem; }
+  .standby-cta { padding: 14px 32px; font-size: 0.9rem; }
+  .standby-logo { width: 180px; }
+}
+
+@media (max-width: 480px) {
+  .compact-grid {
+    /* Slightly tighter grid for very small phones */
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ─── Large Portrait Kiosks (e.g., 32-inch screens) ─── */
+@media (min-width: 1080px) and (orientation: portrait) {
+  :root {
+    --nav-width: 340px; /* Wider sidebar for large screens */
+  }
+
+  .side-nav-logo { padding: 48px 32px 32px; }
+  .side-nav-item {
+    gap: 20px;
+    padding: 24px 32px;
+  }
+  .side-nav-icon { font-size: 2.4rem; }
+  .side-nav-label { font-size: 1.2rem; }
+  .side-nav-item.ai-tab .side-nav-icon {
+    width: 64px; height: 64px;
+    font-size: 2.2rem;
+  }
+  .side-nav-item.sale-tab .side-nav-icon {
+    width: 64px; height: 64px;
+    font-size: 1.8rem;
+  }
+
+  .header { padding: 32px 40px; }
+  .header h1 { font-size: 3rem; }
+  .search-bar-input { font-size: 1.8rem; }
+  .search-btn-icon { font-size: 2rem; }
+  .ai-btn-inline { padding: 16px 32px; font-size: 1.4rem; }
+  
+  .compact-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns is better for portrait */
+    gap: 24px;
+  }
+  .compact-card {
+    min-height: 220px;
+    padding: 32px 20px;
+  }
+  .compact-card .card-emoji { font-size: 5rem; }
+  .compact-card .card-name { font-size: 1.6rem; }
+
+  .standby-mall-name { font-size: 6rem; }
+  .standby-title { font-size: 4.5rem; }
+  .standby-eyebrow { font-size: 2.5rem; }
+  .standby-cta { padding: 24px 64px; font-size: 1.8rem; }
+}
