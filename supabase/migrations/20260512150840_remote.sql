@@ -1,0 +1,1 @@
+INSERT INTO store_sales (store_id, description) VALUES ('50000000-0000-0000-0000-000000000001', '30% descuento en toda la tienda');

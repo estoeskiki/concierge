@@ -1,0 +1,42 @@
+-- Function to perform vector similarity search for stores
+-- This uses the vector cosine distance operator (<=>)
+
+CREATE OR REPLACE FUNCTION match_stores(
+  query_embedding vector(768),
+  match_threshold float,
+  match_count int,
+  p_mall_id uuid
+)
+RETURNS TABLE (
+  id uuid,
+  name text,
+  floor int,
+  unit text,
+  description text,
+  categories text[],
+  brands text[],
+  tags text[],
+  similarity float
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    stores.id,
+    stores.name,
+    stores.floor,
+    stores.unit,
+    stores.description,
+    stores.categories,
+    stores.brands,
+    stores.tags,
+    1 - (stores.embedding <=> query_embedding) AS similarity
+  FROM stores
+  WHERE stores.mall_id = p_mall_id
+    -- Only return matches above the threshold
+    AND 1 - (stores.embedding <=> query_embedding) > match_threshold
+  ORDER BY stores.embedding <=> query_embedding
+  LIMIT match_count;
+END;
+$$;
