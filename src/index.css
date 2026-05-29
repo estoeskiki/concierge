@@ -133,6 +133,17 @@ h1, h2, h3, .font-headline {
   flex-shrink: 0;
 }
 
+.side-nav-footer {
+  padding: 20px 24px;
+  border-top: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mobile-menu-btn { display: none; }
+.mobile-nav-overlay { display: none; }
+
 .side-nav-logo {
   display: flex;
   flex-direction: column;
@@ -578,18 +589,26 @@ h1, h2, h3, .font-headline {
   }
 
   .header {
-    padding: 12px 16px 12px 80px; /* Extra left padding to make room for the logo */
+    padding: 12px 16px;
     gap: 10px;
     flex-wrap: wrap;
-    min-height: 70px; /* Ensure header has enough height for the logo */
   }
   .header h1 { display: none; }
-  .content { padding: 16px; }
   
-  .search-bar-form { width: 100%; flex: 1 1 100%; }
+  .search-bar-form { 
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 16px;
+    background: var(--bg-page);
+    border-top: 2px solid var(--border);
+    z-index: 150;
+    margin: 0;
+  }
   .search-bar-inner { padding: 6px 6px 6px 16px; width: 100%; }
   .search-bar-input { font-size: 1rem; width: 100%; }
   .ai-btn-inline { padding: 8px 16px; font-size: 0.9rem; }
+
+  .content { padding: 16px; padding-bottom: 90px; /* Space for bottom search bar */ }
 
   /* Baratillo teaser mobile responsiveness */
   .baratillo-teaser {
@@ -598,105 +617,121 @@ h1, h2, h3, .font-headline {
     border-radius: 16px;
     gap: 8px;
   }
-  .baratillo-teaser-left {
-    gap: 12px;
-    flex: 1;
-  }
-  .baratillo-badge {
-    padding: 4px 10px;
-    font-size: 0.75rem !important;
-  }
-  .baratillo-teaser-title {
-    font-size: 0.95rem;
-  }
-  .baratillo-teaser-subtitle {
-    font-size: 0.75rem;
-    line-height: 1.2;
-  }
-  .baratillo-teaser-arrow {
-    font-size: 1rem;
+  .baratillo-teaser-left { gap: 12px; flex: 1; }
+  .baratillo-badge { padding: 4px 10px; font-size: 0.75rem !important; }
+  .baratillo-teaser-title { font-size: 0.95rem; }
+  .baratillo-teaser-subtitle { font-size: 0.75rem; line-height: 1.2; }
+  .baratillo-teaser-arrow { font-size: 1rem; }
+
+  /* Top Bar & Slide-out Menu */
+  .mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 4px;
+    z-index: 201;
   }
 
-  /* Side Nav becomes Bottom Nav */
+  .hamburger-line {
+    width: 24px;
+    height: 3px;
+    background: var(--text-primary);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+  }
+
+  .mobile-menu-btn.is-open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .mobile-menu-btn.is-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .mobile-menu-btn.is-open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+  
+  .mobile-nav-overlay {
+    display: block;
+    position: fixed;
+    top: 60px; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 190;
+  }
+  
   .side-nav {
-    order: 2;
     width: 100vw;
-    height: 75px;
-    border-right: none;
-    border-top: 2px solid var(--border);
+    height: 60px;
     flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+    padding: 0 16px;
+    z-index: 200;
   }
   
-  /* Pull logo out of bottom nav and fix it to the top-left of the screen */
   .side-nav-logo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    padding: 12px 16px;
+    height: 40px;
+    padding: 0;
     border: none;
-    height: auto;
-    width: auto;
     background: transparent;
   }
+  .side-nav-logo img { height: 100% !important; width: auto !important; }
+  .side-nav-logo span { display: block; font-size: 1.1rem !important; }
   
-  .side-nav-logo img {
-    height: 45px !important;
-    width: auto !important;
-  }
-  
-  .side-nav-logo span {
-    display: none; /* Hide fallback text on mobile to save space */
-  }
-  
-  /* Hide the "powered by" footer on mobile */
-  .side-nav > div:last-child {
-    display: none !important;
-  }
+  .side-nav-footer { display: none !important; }
   
   .side-nav-tabs {
-    flex-direction: row;
+    position: fixed;
+    top: 60px; left: -280px;
+    width: 260px;
+    height: calc(100dvh - 60px);
+    background: var(--bg-surface);
+    flex-direction: column;
     align-items: stretch;
-    padding: 0;
-    overflow-y: hidden;
-    overflow-x: auto;
-    flex: 1;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    padding: 16px 0;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 2px solid var(--border);
+    z-index: 200;
+    overflow-y: auto;
   }
-  .side-nav-tabs::-webkit-scrollbar { display: none; }
+  
+  .side-nav.open .side-nav-tabs { left: 0; }
   
   .side-nav-item {
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    padding: 8px 10px;
-    min-width: 76px;
-    text-align: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 14px 24px;
+    gap: 16px;
+    text-align: left;
+    width: 100%;
   }
   
-  .side-nav-item.active {
-    background: transparent;
-  }
+  .side-nav-item.active { background: rgba(255,107,152,0.08); }
   
   .side-nav-item.active::before {
-    left: 50%; top: 0;
-    transform: translateX(-50%);
-    width: 32px; height: 3px;
-    border-radius: 0 0 4px 4px;
+    left: 0; top: 0; transform: none;
+    width: 4px; height: 100%;
+    border-radius: 0 4px 4px 0;
   }
   
-  .side-nav-icon { font-size: 1.25rem; margin: 0; }
-  .side-nav-label { font-size: 0.65rem; display: block; }
+  .side-nav-icon { font-size: 1.4rem; margin: 0; }
+  .side-nav-label { display: block; font-size: 1rem; }
   
-  .side-nav-item.ai-tab .side-nav-icon {
-    width: 32px; height: 32px;
-    font-size: 1.1rem;
-  }
+  .side-nav-item.ai-tab .side-nav-icon,
   .side-nav-item.sale-tab .side-nav-icon {
-    width: 32px; height: 32px;
-    font-size: 0.9rem;
+    width: auto; height: auto;
   }
 
   /* Grid layouts */
