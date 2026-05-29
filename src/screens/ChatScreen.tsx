@@ -129,45 +129,32 @@ export default function ChatScreen() {
 
   return (
     <div className="screen-container animate-fade">
-      <header className="header" style={{ borderBottom: '2px solid var(--primary)' }}>
-        <button
-          onClick={() => navigate('/')}
-          style={{ background: 'none', border: 'none', fontSize: '1.25rem', fontWeight: 700, cursor: 'pointer', color: 'var(--text-secondary)' }}
-        >
+      <header className="header chat-header">
+        <button className="chat-back-btn" onClick={() => navigate('/')}>
           ← Volver
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ fontSize: '2rem' }}>✨</div>
-          <h1 style={{ fontSize: '2rem' }}>Asistente Kiki</h1>
+        <div className="chat-header-title">
+          <div className="chat-header-icon">✨</div>
+          <h1>Asistente Kiki</h1>
         </div>
-        <div style={{ width: '80px' }}></div>
+        <div className="chat-header-spacer"></div>
       </header>
 
-      <main className="content" style={{ display: 'flex', flexDirection: 'column', padding: '0', backgroundColor: 'var(--bg-surface)' }}>
+      <main className="content chat-main">
 
         {/* Chat History */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="chat-history">
 
           {/* Welcome Message */}
-          <div style={{ alignSelf: 'flex-start', maxWidth: '85%' }}>
-            <div style={{ backgroundColor: 'var(--bg-surface-low)', padding: '16px 24px', borderRadius: '24px 24px 24px 4px', border: '1px solid var(--border)', fontSize: '1.25rem', lineHeight: '1.5' }}>
+          <div className="chat-msg-row ai">
+            <div className="chat-msg-bubble chat-msg-ai">
               Hola, soy la inteligencia artificial de Kiki. ¿En qué te puedo ayudar hoy?
             </div>
           </div>
 
           {messages.map(msg => (
-            <div key={msg.id} style={{ alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-              <div style={{
-                backgroundColor: msg.role === 'user' ? 'var(--primary)' : 'var(--bg-surface-low)',
-                color: msg.role === 'user' ? '#000' : 'var(--text-primary)',
-                padding: '16px 24px',
-                borderRadius: msg.role === 'user' ? '24px 24px 4px 24px' : '24px 24px 24px 4px',
-                border: msg.role === 'assistant' ? '1px solid var(--border)' : 'none',
-                fontSize: '1.25rem',
-                lineHeight: '1.5',
-                fontWeight: msg.role === 'user' ? 600 : 400
-              }}>
+            <div key={msg.id} className={`chat-msg-row ${msg.role === 'user' ? 'user' : 'ai'}`}>
+              <div className={`chat-msg-bubble ${msg.role === 'user' ? 'chat-msg-user' : 'chat-msg-ai'}`}>
                 {msg.content}
               </div>
 
@@ -185,8 +172,10 @@ export default function ChatScreen() {
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div style={{ alignSelf: 'flex-start', backgroundColor: 'var(--bg-surface-low)', padding: '16px 24px', borderRadius: '24px 24px 24px 4px', border: '1px solid var(--border)' }}>
-              <span className="typing-dots" style={{ fontSize: '1.5rem', color: 'var(--text-secondary)' }}>•••</span>
+            <div className="chat-msg-row ai">
+              <div className="chat-msg-bubble chat-msg-ai">
+                <span className="typing-dots">•••</span>
+              </div>
             </div>
           )}
 
@@ -194,32 +183,23 @@ export default function ChatScreen() {
         </div>
 
         {/* Input Area */}
-        <div style={{ padding: '24px', borderTop: '1px solid var(--border)', backgroundColor: 'var(--bg-page)' }}>
+        <div className="chat-input-area">
           <form
             onSubmit={(e) => { e.preventDefault(); handleSend(input); }}
-            style={{ display: 'flex', gap: '12px' }}
+            className="chat-input-form"
           >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Pregúntame algo..."
-              style={{
-                flex: 1,
-                padding: '20px 24px',
-                fontSize: '1.25rem',
-                borderRadius: '999px',
-                border: '2px solid var(--border)',
-                backgroundColor: 'var(--bg-surface)',
-                outline: 'none',
-                fontFamily: 'var(--font-body)'
-              }}
+              className="chat-input-field"
             />
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="btn-primary glow-primary"
-              style={{ padding: '0 32px', opacity: (!input.trim() || isTyping) ? 0.5 : 1 }}
+              className="btn-primary glow-primary chat-submit-btn"
+              style={{ opacity: (!input.trim() || isTyping) ? 0.5 : 1 }}
             >
               Enviar
             </button>
