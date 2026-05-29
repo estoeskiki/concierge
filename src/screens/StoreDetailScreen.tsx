@@ -36,49 +36,41 @@ export default function StoreDetailScreen() {
 
   return (
     <div className="screen-container animate-fade">
-      <header className="header">
+      <header className="header store-detail-header">
         <button 
           onClick={() => navigate(-1)}
-          style={{ background: 'none', border: 'none', fontSize: '1.25rem', fontWeight: 700, cursor: 'pointer', color: 'var(--text-secondary)' }}
+          className="store-back-btn"
         >
           ← Volver
         </button>
-        <h1>KIKI</h1>
-        <div style={{ width: '80px' }}></div>
+        <div className="store-header-spacer"></div>
       </header>
 
-      <main className="content" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <main className="content store-detail-main">
         
         {/* Map */}
-        <MallMap
-          destinationNodeId={destNodeId}
-          destinationFloor={store.floor}
-          destinationLabel={store.name}
-        />
+        <div className="store-map-wrapper">
+          <MallMap
+            destinationNodeId={destNodeId}
+            destinationFloor={store.floor}
+            destinationLabel={store.name}
+          />
+        </div>
 
         {/* Store Info */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-          <div style={{
-            fontSize: '4rem',
-            width: '100px',
-            height: '100px',
-            backgroundColor: 'var(--bg-surface-low)',
-            borderRadius: '24px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
+        <div className="store-info-row">
+          <div className="store-logo-box">
             {store.emoji}
           </div>
-          <div>
-            <h2 className="font-headline" style={{ fontSize: '3.5rem', color: 'var(--text-primary)', marginBottom: '8px' }}>
+          <div className="store-info-text">
+            <h2 className="font-headline store-title">
               {store.name}
             </h2>
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <span style={{ backgroundColor: 'var(--primary)', color: '#000', padding: '6px 16px', borderRadius: '999px', fontWeight: 700 }}>
+            <div className="store-badges">
+              <span className="store-badge-level">
                 Nivel {store.floor}
               </span>
-              <span style={{ color: 'var(--text-secondary)', fontWeight: 700, fontSize: '1.1rem' }}>
+              <span className="store-badge-unit">
                 Local {store.unit}
               </span>
             </div>
@@ -86,27 +78,22 @@ export default function StoreDetailScreen() {
         </div>
 
         {/* Description */}
-        <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+        <p className="store-desc">
           {store.description?.split(/\s*\[?\s*Keywords?:/i)[0]?.trim()}
         </p>
 
         {/* Active Baratillo Deals */}
         {store.sales && store.sales.length > 0 && (
-          <div style={{
-            borderRadius: '20px',
-            border: '2px solid var(--secondary)',
-            backgroundColor: 'rgba(255,107,152,0.06)',
-            padding: '24px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+          <div className="store-deals-box">
+            <div className="store-deals-title-row">
               <span className="baratillo-badge" style={{ fontSize: '0.9rem', padding: '5px 14px' }}>BARATILLO</span>
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', margin: 0 }}>Ofertas activas</h3>
+              <h3>Ofertas activas</h3>
             </div>
-            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <ul className="store-deals-list">
               {store.sales.map((deal, i) => (
-                <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                  <span style={{ color: 'var(--secondary)', fontWeight: 900, fontSize: '1.3rem', lineHeight: 1.2 }}>•</span>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: 600, lineHeight: 1.4 }}>
+                <li key={i} className="store-deal-item">
+                  <span className="store-deal-bullet">•</span>
+                  <span className="store-deal-text">
                     {deal}
                   </span>
                 </li>
@@ -118,18 +105,10 @@ export default function StoreDetailScreen() {
         {/* Categories */}
         {store.categories && store.categories.length > 0 && (
           <div>
-            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '16px' }}>Categorías</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            <h3 className="store-section-title">Categorías</h3>
+            <div className="store-tags-container">
               {store.categories.map(cat => (
-                <span key={cat} style={{
-                  backgroundColor: 'rgba(204,255,0,0.1)',
-                  border: '1.5px solid var(--primary)',
-                  padding: '8px 18px',
-                  borderRadius: '999px',
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                }}>
+                <span key={cat} className="store-tag cat-tag">
                   {cat}
                 </span>
               ))}
@@ -140,18 +119,10 @@ export default function StoreDetailScreen() {
         {/* Brands */}
         {store.brands && store.brands.length > 0 && (
           <div>
-            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '16px' }}>Marcas y Productos</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            <h3 className="store-section-title">Marcas y Productos</h3>
+            <div className="store-tags-container">
               {store.brands.map(brand => (
-                <span key={brand} style={{
-                  backgroundColor: 'var(--bg-surface)',
-                  border: '1px solid var(--border)',
-                  padding: '8px 16px',
-                  borderRadius: '999px',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  color: 'var(--text-secondary)',
-                }}>
+                <span key={brand} className="store-tag brand-tag">
                   {brand}
                 </span>
               ))}
