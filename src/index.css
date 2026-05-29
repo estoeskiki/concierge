@@ -519,7 +519,7 @@ h1, h2, h3, .font-headline {
 @media (max-width: 768px) {
   /* Layout changes */
   .kiosk-frame {
-    flex-direction: column;
+    flex-direction: column; /* Stacks screen-area on top, side-nav on bottom */
   }
   
   .screen-area {
@@ -527,11 +527,12 @@ h1, h2, h3, .font-headline {
   }
 
   .header {
-    padding: 12px 16px;
+    padding: 12px 16px 12px 80px; /* Extra left padding to make room for the logo */
     gap: 10px;
     flex-wrap: wrap;
+    min-height: 70px; /* Ensure header has enough height for the logo */
   }
-  .header h1 { font-size: 1.4rem; }
+  .header h1 { display: none; }
   .content { padding: 16px; }
   
   .search-bar-inner { padding: 6px 6px 6px 16px; }
@@ -542,15 +543,36 @@ h1, h2, h3, .font-headline {
   .side-nav {
     order: 2;
     width: 100vw;
-    height: 70px;
+    height: 75px;
     border-right: none;
     border-top: 2px solid var(--border);
     flex-direction: row;
-    overflow: visible;
+    align-items: center;
   }
   
-  /* Hide logo and footer on mobile */
-  .side-nav-logo, 
+  /* Pull logo out of bottom nav and fix it to the top-left of the screen */
+  .side-nav-logo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    padding: 12px 16px;
+    border: none;
+    height: auto;
+    width: auto;
+    background: transparent;
+  }
+  
+  .side-nav-logo img {
+    height: 45px !important;
+    width: auto !important;
+  }
+  
+  .side-nav-logo span {
+    display: none; /* Hide fallback text on mobile to save space */
+  }
+  
+  /* Hide the "powered by" footer on mobile */
   .side-nav > div:last-child {
     display: none !important;
   }
@@ -561,7 +583,7 @@ h1, h2, h3, .font-headline {
     padding: 0;
     overflow-y: hidden;
     overflow-x: auto;
-    width: 100%;
+    flex: 1;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -587,8 +609,8 @@ h1, h2, h3, .font-headline {
     border-radius: 0 0 4px 4px;
   }
   
-  .side-nav-icon { font-size: 1.25rem; }
-  .side-nav-label { font-size: 0.65rem; }
+  .side-nav-icon { font-size: 1.25rem; margin: 0; }
+  .side-nav-label { font-size: 0.65rem; display: block; }
   
   .side-nav-item.ai-tab .side-nav-icon {
     width: 32px; height: 32px;
@@ -606,18 +628,18 @@ h1, h2, h3, .font-headline {
   }
   
   .compact-card {
-    min-height: 130px;
-    padding: 20px 12px;
+    min-height: 120px;
+    padding: 16px 8px;
   }
-  .compact-card .card-emoji { font-size: 2.5rem; }
-  .compact-card .card-name { font-size: 0.95rem; }
+  .compact-card .card-emoji { font-size: 2rem; }
+  .compact-card .card-name { font-size: 0.85rem; }
 
   /* Map/Standby tweaks */
   .standby-mall-name { font-size: 2.4rem; }
   .standby-title { font-size: 1.8rem; }
   .standby-eyebrow { font-size: 1.2rem; }
   .standby-cta { padding: 14px 32px; font-size: 0.9rem; }
-  .standby-logo { width: 180px; }
+  .standby-logo { width: 140px; }
 }
 
 @media (max-width: 480px) {
