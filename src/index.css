@@ -49,10 +49,15 @@ h1, h2, h3, .font-headline {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  min-height: 0;
 }
 
 .screen-container {
   display: flex; flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   height: 100%;
 }
 
@@ -221,10 +226,10 @@ h1, h2, h3, .font-headline {
   box-shadow: 0 0 14px rgba(204,255,0,0.5);
 }
 
-/* ─── Compact 4-col Grid ─── */
+/* ─── Compact Grid ─── */
 .compact-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 14px;
 }
 

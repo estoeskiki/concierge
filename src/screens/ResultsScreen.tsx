@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useSearchParams, useNavigate, Navigate } from 'react-router-dom';
 import { doSearch } from '../lib/search';
 import StoreCard from '../components/StoreCard';
+import SearchBar from '../components/SearchBar';
 
 export default function ResultsScreen() {
   const [searchParams] = useSearchParams();
@@ -37,8 +38,8 @@ export default function ResultsScreen() {
         >
           ← Volver
         </button>
-        <h1>KIKI</h1>
-        <div style={{ width: '80px' }}></div> {/* Spacer for flex centering */}
+        <h1 className="glow-primary">KIKI</h1>
+        <SearchBar />
       </header>
 
       <main className="content">

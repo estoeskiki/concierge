@@ -116,7 +116,7 @@ export default function StoresScreen() {
         </div>
       ) : (
         /* ── All stores: alphabetical sections + scrubber ── */
-        <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
+        <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative', minHeight: 0, minWidth: 0 }}>
           <div ref={contentRef} className="content animate-fade" style={{ flex: 1, paddingRight: '48px' }}>
             {grouped.map(([letter, group]) => (
               <div key={letter} ref={el => { sectionRefs.current[letter] = el; }}>

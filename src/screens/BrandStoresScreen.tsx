@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getStoresByBrand } from '../lib/search';
+import SearchBar from '../components/SearchBar';
 
 export default function BrandStoresScreen() {
   const { brand } = useParams<{ brand: string }>();
@@ -19,7 +20,7 @@ export default function BrandStoresScreen() {
           ← Volver
         </button>
         <h1 className="glow-primary" style={{ fontSize: '1.8rem' }}>{decodedBrand.toUpperCase()}</h1>
-        <div style={{ width: '80px' }} />
+        <SearchBar />
       </header>
 
       <main className="content">

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Store } from '../components/StoreCard';
 import { getBaratilloStores } from '../lib/search';
 
+import SearchBar from '../components/SearchBar';
+
 export default function BaratilloScreen() {
   const navigate = useNavigate();
   const [stores, setStores] = useState<Store[]>([]);
@@ -31,6 +33,7 @@ export default function BaratilloScreen() {
           <span className="baratillo-badge" style={{ fontSize: '1rem', padding: '6px 18px' }}>BARATILLO</span>
           <h1 className="glow-secondary" style={{ fontSize: '1.8rem' }}>OFERTAS</h1>
         </div>
+        <SearchBar />
       </header>
 
       <main className="content">

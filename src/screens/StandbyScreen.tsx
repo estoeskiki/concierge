@@ -26,7 +26,7 @@ export default function StandbyScreen({ visible, onDismiss }: Props) {
   return (
     <div
       className={`standby-screen ${visible ? 'standby-visible' : 'standby-hidden'}`}
-      onPointerDown={visible ? onDismiss : undefined}
+      onClick={visible ? (e) => { e.stopPropagation(); onDismiss(); } : undefined}
     >
       <div className="standby-orb standby-orb-1" />
       <div className="standby-orb standby-orb-2" />

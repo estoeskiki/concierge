@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SearchBar from '../components/SearchBar';
 
 type EventType = 'moda' | 'musica' | 'belleza' | 'comida' | 'familia';
 
@@ -112,6 +113,7 @@ export default function EventosScreen() {
     <div className="screen-container animate-fade">
       <div className="header">
         <h1 className="glow-primary" style={{ fontSize: '1.8rem' }}>EVENTOS</h1>
+        <SearchBar />
       </div>
 
       <div className="content" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

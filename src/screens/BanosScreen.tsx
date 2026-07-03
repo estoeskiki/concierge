@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase, MALL_ID } from '../lib/supabase';
 import MallMap from '../components/MallMap';
+import SearchBar from '../components/SearchBar';
 
 interface Bathroom {
   id: string;
@@ -35,7 +36,10 @@ export default function BanosScreen() {
   if (!selected) {
     return (
       <div className="screen-container animate-fade">
-        <div className="header"><h1 className="glow-primary" style={{ fontSize: '1.8rem' }}>BAÑOS</h1></div>
+        <div className="header">
+          <h1 className="glow-primary" style={{ fontSize: '1.8rem' }}>BAÑOS</h1>
+          <SearchBar />
+        </div>
         <div className="flex-center content"><p style={{ color: 'var(--text-secondary)', fontWeight: 700 }}>Cargando...</p></div>
       </div>
     );
@@ -45,6 +49,7 @@ export default function BanosScreen() {
     <div className="screen-container animate-fade">
       <div className="header">
         <h1 className="glow-primary" style={{ fontSize: '1.8rem' }}>BAÑOS</h1>
+        <SearchBar />
       </div>
 
       <div className="content" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
