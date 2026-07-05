@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import CategoriesScreen from './screens/CategoriesScreen';
 import StoresScreen from './screens/StoresScreen';
@@ -77,17 +77,17 @@ function App() {
 
   return (
     <Routes>
-      <Route 
-        path="/login/*" 
+      <Route
+        path="/login/*"
         element={
-          role && role !== 'kiosk' ? <AdminApp /> : <LoginScreen />
-        } 
+          role && role !== 'kiosk' ? <Navigate to="/admin" replace /> : <LoginScreen />
+        }
       />
-      <Route 
-        path="/admin/*" 
+      <Route
+        path="/admin/*"
         element={
           role && role !== 'kiosk' ? <AdminApp /> : <LoginScreen />
-        } 
+        }
       />
       <Route path="*" element={<KioskApp />} />
     </Routes>

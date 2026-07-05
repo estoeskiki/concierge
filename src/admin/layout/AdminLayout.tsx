@@ -10,18 +10,18 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '',           label: 'Resumen',  icon: '▤' },
-  { to: 'stores',     label: 'Tiendas',  icon: '◫', adminOnly: true },
-  { to: 'events',     label: 'Eventos',  icon: '◷', adminOnly: true },
-  { to: 'bathrooms',  label: 'Baños',    icon: '◈', adminOnly: true },
-  { to: 'store',      label: 'Mi Tienda', icon: '◩' },
+  { to: '/admin',           label: 'Resumen',  icon: '▤' },
+  { to: '/admin/stores',    label: 'Tiendas',  icon: '◫', adminOnly: true },
+  { to: '/admin/events',    label: 'Eventos',  icon: '◷', adminOnly: true },
+  { to: '/admin/bathrooms', label: 'Baños',    icon: '◈', adminOnly: true },
+  { to: '/admin/store',     label: 'Mi Tienda', icon: '◩' },
 ];
 
 function NavItemLink({ item, compact }: { item: NavItem; compact?: boolean }) {
   return (
     <NavLink
       to={item.to}
-      end={item.to === ''}
+      end={item.to === '/admin'}
       style={({ isActive }) => ({
         display: 'flex',
         alignItems: 'center',
@@ -54,13 +54,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   const visibleItems = NAV_ITEMS.filter(item => {
     if (item.adminOnly && role !== 'mall_admin') return false;
-    if (item.to === 'store' && role !== 'store_manager') return false;
+    if (item.to === '/admin/store' && role !== 'store_manager') return false;
     return true;
   });
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
+    navigate('/admin');
   };
 
   return (

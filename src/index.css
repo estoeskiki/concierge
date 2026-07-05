@@ -914,6 +914,65 @@ h1, h2, h3, .font-headline {
   }
 }
 
+/* ─── Admin Portal — Responsive Form Grids ─── */
+.admin-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.admin-grid-2-wide {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .admin-grid-2,
+  .admin-grid-2-wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Admin Portal — Stores Table (card layout on mobile) ─── */
+.stores-table-header {
+  display: grid;
+  grid-template-columns: 2fr 160px 1fr 80px;
+  padding: 12px 20px;
+  border-bottom: 2px solid var(--border);
+  background: var(--bg-surface-low);
+}
+.stores-row {
+  display: grid;
+  grid-template-columns: 2fr 160px 1fr 80px;
+  padding: 14px 20px;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.1s;
+}
+.stores-row-meta {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+.stores-row-meta > span { flex: 1; min-width: 0; }
+
+@media (max-width: 640px) {
+  .stores-table-header { display: none; }
+  .stores-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name edit"
+      "meta meta"
+      "desc desc";
+    row-gap: 6px;
+    padding: 14px 16px;
+  }
+  .stores-row-name { grid-area: name; }
+  .stores-row-edit { grid-area: edit; }
+  .stores-row-meta { grid-area: meta; }
+  .stores-row-desc { grid-area: desc; white-space: normal !important; }
+}
+
 /* ─── Large Portrait Kiosks (e.g., 32-inch screens) ─── */
 @media (min-width: 1080px) and (orientation: portrait) {
   :root {

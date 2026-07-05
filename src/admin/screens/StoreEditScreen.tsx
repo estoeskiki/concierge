@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import FormField, { inputStyle } from '../components/FormField';
@@ -35,7 +35,9 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
   const { id: paramId } = useParams<{ id: string }>();
   const { storeId: authStoreId, role } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const id = propStoreId ?? paramId ?? authStoreId ?? '';
+  const [isNewUnsaved, setIsNewUnsaved] = useState(() => Boolean((location.state as any)?.isNew));
 
   // Store basics
   const [name, setName]   = useState('');
@@ -53,6 +55,8 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
   const [saveState, setSaveState] = useState<SaveState>('idle');
   const [loading, setLoading]     = useState(true);
   const [notFound, setNotFound]   = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleting, setDeleting]   = useState(false);
 
   useEffect(() => {
     if (!id) { setNotFound(true); setLoading(false); return; }
@@ -102,6 +106,31 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
     setSales(s => s.map((x, idx) => idx === i ? { ...x, active: !x.active } : x));
   const removeSale = (i: number) => setSales(s => s.filter((_, idx) => idx !== i));
 
+  const handleDelete = async () => {
+    if (!id || deleting) return;
+    setDeleting(true);
+    try {
+      const { error } = await supabase.from('stores').delete().eq('id', id);
+      if (error) throw error;
+      navigate('/admin/stores');
+    } catch (err: any) {
+      console.error('[StoreEdit] delete error:', err);
+      setDeleting(false);
+      setDeleteConfirm(false);
+    }
+  };
+
+  const handleCancel = async () => {
+    if (role === 'mall_admin') {
+      if (isNewUnsaved && id) {
+        await supabase.from('stores').delete().eq('id', id);
+      }
+      navigate('/admin/stores');
+    } else {
+      navigate('/admin');
+    }
+  };
+
   const handleSave = async () => {
     if (!id) return;
     setSaveState('saving');
@@ -146,6 +175,7 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
       supabase.functions.invoke('embed-store', { body: { store_id: id } })
         .catch(err => console.warn('[embed-store]', err));
 
+      setIsNewUnsaved(false);
       setSaveState('saved');
       setTimeout(() => setSaveState('idle'), 2500);
     } catch (err: any) {
@@ -168,7 +198,7 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-start' }}>
         <p style={{ fontFamily: 'var(--font-body)', color: '#ef4444', fontWeight: 700 }}>Tienda no encontrada.</p>
         {role === 'mall_admin' && (
-          <button onClick={() => navigate('/stores')} style={{ cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 700, padding: '10px 20px', borderRadius: '10px', border: '2px solid var(--border)', background: 'transparent' }}>
+          <button onClick={() => navigate('/admin/stores')} style={{ cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 700, padding: '10px 20px', borderRadius: '10px', border: '2px solid var(--border)', background: 'transparent' }}>
             ← Volver a tiendas
           </button>
         )}
@@ -203,7 +233,7 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
         <div>
           {role === 'mall_admin' && (
             <button
-              onClick={() => navigate('/stores')}
+              onClick={() => navigate('/admin/stores')}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.82rem', color: 'var(--text-secondary)', padding: '0 0 8px', display: 'block' }}
             >
               ← Tiendas
@@ -219,7 +249,42 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
             {name || 'Editar Tienda'}
           </h1>
         </div>
-        <SaveButton state={saveState} onClick={handleSave} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          {role === 'mall_admin' && (
+            deleteConfirm ? (
+              <>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  style={{ padding: '11px 18px', borderRadius: '12px', border: 'none', background: '#ef4444', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.85rem', color: '#fff', cursor: deleting ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap' }}
+                >
+                  {deleting ? 'Eliminando…' : 'Confirmar eliminación'}
+                </button>
+                <button
+                  onClick={() => setDeleteConfirm(false)}
+                  disabled={deleting}
+                  style={{ padding: '11px 14px', borderRadius: '12px', border: '2px solid var(--border)', background: 'transparent', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-primary)', cursor: 'pointer' }}
+                >
+                  ×
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setDeleteConfirm(true)}
+                style={{ padding: '11px 18px', borderRadius: '12px', border: '2px solid var(--border)', background: 'transparent', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.85rem', color: '#ef4444', cursor: 'pointer', whiteSpace: 'nowrap' }}
+              >
+                Eliminar tienda
+              </button>
+            )
+          )}
+          <button
+            onClick={handleCancel}
+            style={{ padding: '11px 18px', borderRadius: '12px', border: '2px solid var(--border)', background: 'transparent', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+          >
+            Cancelar
+          </button>
+          <SaveButton state={saveState} onClick={handleSave} />
+        </div>
       </div>
 
       {/* Info básica */}
@@ -246,7 +311,7 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
             />
           </FormField>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+        <div className="admin-grid-2">
           <FormField label="Local / Unidad">
             <input
               style={inputStyle}
@@ -419,7 +484,13 @@ export default function StoreEditScreen({ storeId: propStoreId }: StoreEditScree
       </div>
 
       {/* Save at bottom too */}
-      <div style={{ paddingBottom: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', paddingBottom: '16px' }}>
+        <button
+          onClick={handleCancel}
+          style={{ padding: '11px 18px', borderRadius: '12px', border: '2px solid var(--border)', background: 'transparent', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+        >
+          Cancelar
+        </button>
         <SaveButton state={saveState} onClick={handleSave} />
       </div>
     </div>

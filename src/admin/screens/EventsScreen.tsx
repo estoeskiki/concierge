@@ -197,7 +197,7 @@ export default function EventsScreen() {
         </FormField>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="admin-grid-2">
         <FormField label="Fecha inicio">
           <input type="date" style={inputStyle} value={form.start_date} onChange={e => setField('start_date', e.target.value)}
             onFocus={e => (e.target.style.borderColor = 'var(--primary)')}
@@ -210,7 +210,7 @@ export default function EventsScreen() {
         </FormField>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="admin-grid-2">
         <FormField label="Hora" hint="Ej: 7:00 PM">
           <input style={inputStyle} value={form.time} onChange={e => setField('time', e.target.value)}
             onFocus={e => (e.target.style.borderColor = 'var(--primary)')}
@@ -323,33 +323,39 @@ export default function EventsScreen() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                   <span style={{ fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.95rem' }}>{ev.title}</span>
                   <TypeBadge type={ev.type} />
-                  {!ev.active && (
-                    <span style={{ padding: '2px 8px', borderRadius: '20px', background: 'var(--bg-surface-low)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
-                      Inactivo
-                    </span>
-                  )}
+                  <span style={{
+                    padding: '2px 8px',
+                    borderRadius: '20px',
+                    background: ev.active ? '#dcfce7' : 'var(--bg-surface-low)',
+                    fontFamily: 'var(--font-body)',
+                    fontWeight: 700,
+                    fontSize: '0.7rem',
+                    color: ev.active ? '#166534' : 'var(--text-secondary)',
+                  }}>
+                    {ev.active ? 'Activo' : 'Inactivo'}
+                  </span>
                 </div>
                 <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                   {ev.dates} · {ev.time} · {ev.location}
                 </span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => handleToggleActive(ev)}
                   style={{
                     padding: '5px 12px',
                     borderRadius: '8px',
-                    border: `2px solid ${ev.active ? 'var(--primary)' : 'var(--border)'}`,
-                    background: ev.active ? 'var(--primary)' : 'transparent',
+                    border: `2px solid ${ev.active ? '#ef4444' : 'var(--primary)'}`,
+                    background: ev.active ? 'transparent' : 'var(--primary)',
                     fontFamily: 'var(--font-body)',
                     fontWeight: 700,
                     fontSize: '0.75rem',
-                    color: ev.active ? '#000' : 'var(--text-secondary)',
+                    color: ev.active ? '#ef4444' : '#000',
                     cursor: 'pointer',
                   }}
                 >
-                  {ev.active ? 'Activo' : 'Inactivo'}
+                  {ev.active ? 'Desactivar' : 'Activar'}
                 </button>
                 <button
                   onClick={() => editingId === ev.id ? cancelEdit() : startEdit(ev)}
@@ -410,7 +416,7 @@ export default function EventsScreen() {
                     </select>
                   </FormField>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className="admin-grid-2">
                   <FormField label="Fecha inicio">
                     <input type="date" style={inputStyle} value={form.start_date} onChange={e => setField('start_date', e.target.value)}
                       onFocus={e => (e.target.style.borderColor = 'var(--primary)')}
@@ -422,7 +428,7 @@ export default function EventsScreen() {
                       onBlur={e => (e.target.style.borderColor = 'var(--border)')} />
                   </FormField>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className="admin-grid-2">
                   <FormField label="Hora">
                     <input style={inputStyle} value={form.time} onChange={e => setField('time', e.target.value)}
                       onFocus={e => (e.target.style.borderColor = 'var(--primary)')}

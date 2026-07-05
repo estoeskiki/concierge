@@ -122,7 +122,7 @@ export default function OverviewScreen() {
         </div>
 
         <button
-          onClick={() => navigate('/store')}
+          onClick={() => navigate('/admin/store')}
           style={{
             alignSelf: 'flex-start',
             padding: '14px 28px',
@@ -176,9 +176,9 @@ export default function OverviewScreen() {
         gap: '12px',
       }}>
         {[
-          { label: 'Ver tiendas', to: '/stores' },
-          { label: 'Ver eventos', to: '/events' },
-          { label: 'Ver baños', to: '/bathrooms' },
+          { label: 'Ver tiendas', to: '/admin/stores' },
+          { label: 'Ver eventos', to: '/admin/events' },
+          { label: 'Ver baños', to: '/admin/bathrooms' },
         ].map(({ label, to }) => (
           <button
             key={to}

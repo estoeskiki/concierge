@@ -8,7 +8,7 @@ interface FormFieldProps {
 
 export default function FormField({ label, hint, children }: FormFieldProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', minWidth: 0 }}>
       <label style={{
         fontFamily: 'var(--font-body)',
         fontWeight: 700,

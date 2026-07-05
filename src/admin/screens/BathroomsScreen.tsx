@@ -15,14 +15,13 @@ interface Bathroom {
   active: boolean;
 }
 
-const EMPTY_FORM: Omit<Bathroom, 'id'> = {
+const EMPTY_FORM: Omit<Bathroom, 'id' | 'active'> = {
   label: '',
   floor: 1,
   zone: '',
   distance_m: 0,
   accessible: true,
   family: false,
-  active: true,
 };
 
 export default function BathroomsScreen() {
@@ -32,7 +31,7 @@ export default function BathroomsScreen() {
   const [bathrooms, setBathrooms] = useState<Bathroom[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | 'new' | null>(null);
-  const [form, setForm] = useState<Omit<Bathroom, 'id'>>(EMPTY_FORM);
+  const [form, setForm] = useState<Omit<Bathroom, 'id' | 'active'>>(EMPTY_FORM);
   const [saveState, setSaveState] = useState<SaveState>('idle');
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
@@ -52,7 +51,7 @@ export default function BathroomsScreen() {
 
   const startCreate = () => { setForm(EMPTY_FORM); setEditingId('new'); };
   const startEdit = (b: Bathroom) => {
-    const { id, ...rest } = b;
+    const { id, active: _active, ...rest } = b;
     setForm(rest);
     setEditingId(id);
   };
@@ -89,11 +88,6 @@ export default function BathroomsScreen() {
     await load();
   };
 
-  const handleToggleActive = async (b: Bathroom) => {
-    await supabase.from('bathrooms').update({ active: !b.active }).eq('id', b.id);
-    setBathrooms(prev => prev.map(x => x.id === b.id ? { ...x, active: !x.active } : x));
-  };
-
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
@@ -124,7 +118,7 @@ export default function BathroomsScreen() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px' }}>
+      <div className="admin-grid-2-wide">
         <FormField label="Nombre / Ubicación">
           <input style={inputStyle} value={form.label} onChange={e => setField('label', e.target.value)}
             onFocus={e => (e.target.style.borderColor = 'var(--primary)')}
@@ -137,7 +131,7 @@ export default function BathroomsScreen() {
         </FormField>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="admin-grid-2">
         <FormField label="Zona / Sector">
           <input style={inputStyle} value={form.zone} onChange={e => setField('zone', e.target.value)}
             placeholder="Ej: Ala Norte"
@@ -156,7 +150,6 @@ export default function BathroomsScreen() {
         {([
           { key: 'accessible' as const, label: 'Accesible' },
           { key: 'family'     as const, label: 'Familiar' },
-          { key: 'active'     as const, label: 'Activo (visible)' },
         ] as const).map(({ key, label }) => (
           <label key={key} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
             <input type="checkbox" checked={form[key]} onChange={e => setField(key, e.target.checked)}
@@ -233,7 +226,6 @@ export default function BathroomsScreen() {
                 alignItems: 'center',
                 gap: '12px',
                 flexWrap: 'wrap',
-                opacity: b.active ? 1 : 0.65,
               }}>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -251,11 +243,6 @@ export default function BathroomsScreen() {
                         Familiar
                       </span>
                     )}
-                    {!b.active && (
-                      <span style={{ padding: '2px 8px', borderRadius: '12px', background: 'var(--bg-surface-low)', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.7rem' }}>
-                        Inactivo
-                      </span>
-                    )}
                   </div>
                   {b.zone && (
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
@@ -264,23 +251,7 @@ export default function BathroomsScreen() {
                   )}
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <button
-                    onClick={() => handleToggleActive(b)}
-                    style={{
-                      padding: '5px 12px',
-                      borderRadius: '8px',
-                      border: `2px solid ${b.active ? 'var(--primary)' : 'var(--border)'}`,
-                      background: b.active ? 'var(--primary)' : 'transparent',
-                      fontFamily: 'var(--font-body)',
-                      fontWeight: 700,
-                      fontSize: '0.75rem',
-                      color: b.active ? '#000' : 'var(--text-secondary)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {b.active ? 'Activo' : 'Inactivo'}
-                  </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                   <button
                     onClick={() => editingId === b.id ? cancelEdit() : startEdit(b)}
                     style={{
